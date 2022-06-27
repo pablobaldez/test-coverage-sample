@@ -1,14 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    dependencies {
-        classpath "org.jacoco:org.jacoco.core:0.8.8"
-    }
-}
-
 plugins {
     id 'com.android.application' version '7.2.1' apply false
     id 'com.android.library' version '7.2.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.6.21' apply false
+    id 'jacoco'
 }
 
 allprojects {
@@ -17,4 +12,27 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+task jacocoFullReport(type: JacocoReport, group: 'Coverage reports') {
+    group = 'Verification'
+    description = 'Generate Jacoco aggregate report for all modules'
+
+    def projects = subprojects.findAll { it.getTasksByName("jacocoTestReport", false) }
+
+    //noinspection GrUnresolvedAccess
+    dependsOn(projects.jacocoTestReport)
+
+    final source = files(projects.jacocoTestReport.sourceDirectories)
+
+    additionalSourceDirs.setFrom source
+    sourceDirectories.setFrom source
+
+    classDirectories.setFrom files(projects.jacocoTestReport.classDirectories)
+    executionData.setFrom files(projects.jacocoTestReport.executionData)
+
+    reports {
+        html.enabled(true)
+        csv.enabled(true)
+    }
 }

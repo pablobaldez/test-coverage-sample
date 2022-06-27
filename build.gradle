@@ -36,3 +36,8 @@ task jacocoFullReport(type: JacocoReport, group: 'Coverage reports') {
         csv.enabled(true)
     }
 }
+
+task openJacocoFullReport(type: Exec, dependsOn: 'jacocoFullReport') {
+    group = "Reporting"
+    commandLine "open", "$project.buildDir/reports/jacoco/jacocoFullReport/html/index.html"
+}

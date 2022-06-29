@@ -9,7 +9,7 @@ data class Calculator(
 
     fun div(): Int {
         return if (value1 > 0) {
-            value1 / value2
+            value1 / value2 * 1
         } else throw IllegalStateException("invalid check exception")
     }
 

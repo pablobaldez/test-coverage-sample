@@ -1,4 +1,4 @@
-def androidExclusion = [
+def reportExclusion = [
         '**/databinding/**/*.*',
         '**/android/databinding/*Binding.*',
         '**/BR.*',
@@ -10,12 +10,18 @@ def androidExclusion = [
         '**/Dagger*Component.*',
         '**/Dagger*Component$Builder.*',
         '**/*Module_*Factory.*',
-        '**/*Fragment*.*',
-        '**/*Activity*.*',
-        '**/*Adapter*.*',
-        '**/*ViewPager*.*',
-        '**/*ViewHolder*.*',
         '**/*Module*.*'
+]
+
+def validationExclusion = [
+        '*Fragment*',
+        '*Activity*',
+        '*Adapter*',
+        '*ViewPager*',
+        '*View*',
+        '*ViewGroup*',
+        '*Layout*',
+        '*ViewHolder*',
 ]
 
 task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
@@ -30,11 +36,11 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
 
     def javaBuildTree = fileTree(
             dir: "build/intermediates/javac/debug/",
-            excludes: androidExclusion
+            excludes: reportExclusion
     )
     def kotlinBuildTree = fileTree(
             dir: "build/tmp/kotlin-classes/debug/",
-            excludes: androidExclusion
+            excludes: reportExclusion
     )
     def javaMainSrc = "${project.projectDir}/src/main/java/"
     def kotlinMainSrc = "${project.projectDir}/src/main/kotlin/"
@@ -43,10 +49,29 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
     executionData.from = files("${project.buildDir}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
 }
 
-task showCoverageReport(type: Exec, dependsOn: 'jacocoTestReport') {
-    group = "Reporting"
-    commandLine "open", "${project.buildDir}/reports/jacoco/jacocoTestReport/html/index.html"
+task jacocoTestCoverageVerification(type: JacocoCoverageVerification, dependsOn: 'testDebugUnitTest') {
+
+    group = "Verification"
+    description = "Assert minumun coverage in the project."
+
+    sourceDirectories.setFrom jacocoTestReport.sourceDirectories
+    classDirectories.setFrom jacocoTestReport.classDirectories
+    executionData.setFrom jacocoTestReport.executionData
+
+    violationRules {
+        rule {
+            element = 'CLASS'
+
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.5
+            }
+            excludes = validationExclusion
+        }
+    }
 }
+
+check.dependsOn jacocoTestCoverageVerification
 
 android.testOptions {
     unitTests.all {

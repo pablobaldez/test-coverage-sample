@@ -42,11 +42,10 @@ jobs:
       - name: Test Coverage Report Upload
         uses: actions/upload-artifact@v3
         with:
-          name: Coverage Report
-          path: build/reports/jacoco/jacocoFullReport/html/index.html
+          name: coverage-report
+          path: build/reports/jacoco/jacocoFullReport/html/
 
       - name: APK Upload
         uses: actions/upload-artifact@v3
         with:
-          name: apk
           path: app/build/outputs/apk/debug/app-debug.apk

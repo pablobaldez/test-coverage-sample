@@ -1,23 +1,48 @@
-name: PR Build
-on: [pull_request]
+name: Build & Test
+on: pull_request
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
 
-      - name: Set up JDK environment
+      - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          java-version: 1.8
+          java-version: 11
+          distribution: "zulu"
 
-      - name: Build all artifacts
-        id: buildAllApks
+      - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+
+      - name: Spotless Check
+        run: ./gradlew spotlessCheck
+
+      - name: Tests
+        run: ./gradlew testQaDebugUnitTest
+
+      - name: Coverage Report
+        run: ./gradlew jacocoFullReport
+
+      - name: Assemble
+        run: ./gradlew assembleDebug
+
+      - name: Generate JaCoCo Badge
+        uses: cicirello/jacoco-badge-generator@v2
         with:
-          gradle-version: current
-          wrapper-cache-enabled: true
-          dependencies-cache-enabled: true
-          configuration-cache-enabled: true
-          arguments: assembleDebug jacocoFullReport
+          generate-branches-badge: true
+          jacoco-csv-file: build/reports/jacoco/jacocoFullReport/jacocoFullReport.csv
+
+      - name: Test Coverage Report Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: Coverage Report
+          path: build/reports/jacoco/jacocoFullReport/html/index.html
+
+      - name: APK Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: Coverage Report
+          path: app/build/outputs/apk/qa/debug/app-qa-debug.apk

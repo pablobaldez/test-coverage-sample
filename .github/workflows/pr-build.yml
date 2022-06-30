@@ -18,13 +18,13 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest --scan
 
       - name: Coverage Report
         run: ./gradlew jacocoFullReport
 
       - name: Assemble
-        run: ./gradlew assembleDebug --scan
+        run: ./gradlew assembleDebug
 
       - name: Generate JaCoCo Badge
         uses: cicirello/jacoco-badge-generator@v2
@@ -48,4 +48,5 @@ jobs:
       - name: APK Upload
         uses: actions/upload-artifact@v3
         with:
+          name: app-debug.apk
           path: app/build/outputs/apk/debug/app-debug.apk

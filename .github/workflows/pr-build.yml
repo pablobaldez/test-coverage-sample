@@ -1,4 +1,4 @@
-name: Build & Test
+name: Build
 on: push
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Tests
-        run: ./gradlew testQaDebugUnitTest
+        run: ./gradlew testDebugUnitTest
 
       - name: Coverage Report
         run: ./gradlew jacocoFullReport

@@ -32,6 +32,13 @@ jobs:
           generate-branches-badge: true
           jacoco-csv-file: build/reports/jacoco/jacocoFullReport/jacocoFullReport.csv
 
+      - name: Commit and push the badge (if it changed)
+        uses: EndBug/add-and-commit@v7
+        with:
+          default_author: github_actions
+          message: 'commit coverage badge'
+          add: '*.svg'
+
       - name: Test Coverage Report Upload
         uses: actions/upload-artifact@v3
         with:

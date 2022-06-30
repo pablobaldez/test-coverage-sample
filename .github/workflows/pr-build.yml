@@ -36,7 +36,7 @@ jobs:
         uses: EndBug/add-and-commit@v7
         with:
           default_author: github_actions
-          message: 'commit coverage badge'
+          message: commit coverage badge ${{ github.run_attempt }}
           add: '*.svg'
 
       - name: Test Coverage Report Upload

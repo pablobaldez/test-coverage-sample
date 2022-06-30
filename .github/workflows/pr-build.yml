@@ -41,5 +41,5 @@ jobs:
       - name: APK Upload
         uses: actions/upload-artifact@v3
         with:
-          name: Coverage Report
-          path: app/build/outputs/apk/qa/debug/app-qa-debug.apk
+          name: apk
+          path: app/build/outputs/apk/debug/app-debug.apk

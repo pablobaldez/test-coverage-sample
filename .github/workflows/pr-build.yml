@@ -17,14 +17,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: Assemble
+        run: ./gradlew assembleDebug --scan
+
       - name: Tests
-        run: ./gradlew testDebugUnitTest --scan
+        run: ./gradlew testDebugUnitTest
 
       - name: Coverage Report
         run: ./gradlew jacocoFullReport
-
-      - name: Assemble
-        run: ./gradlew assembleDebug
 
       - name: Generate JaCoCo Badge
         uses: cicirello/jacoco-badge-generator@v2

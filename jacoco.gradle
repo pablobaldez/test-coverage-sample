@@ -32,6 +32,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
     reports {
         html.enabled(true)
         csv.enabled(true)
+        xml.enabled(true)
     }
 
     def javaBuildTree = fileTree(

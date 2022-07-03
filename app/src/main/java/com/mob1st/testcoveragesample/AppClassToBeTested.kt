@@ -10,4 +10,12 @@ data class AppClassToBeTested(val someBoolean: Boolean) {
         }
     }
 
+    fun aSecondMethod() {
+        if (someBoolean) {
+            print("some error")
+        } else {
+            print("another error")
+        }
+    }
+
 }

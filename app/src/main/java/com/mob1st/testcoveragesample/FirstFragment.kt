@@ -1,6 +1,7 @@
 package com.mob1st.testcoveragesample
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +33,7 @@ class  FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val toBe = AppClassToBeTested(false)
-        toBe.aSecondMethod()
+        Log.d("ptest",  "text: ${toBe.aThirdMethod()}")
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }

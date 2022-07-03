@@ -18,4 +18,15 @@ data class AppClassToBeTested(val someBoolean: Boolean, val theSecondBoolean: Bo
         }
     }
 
+    fun aThirdMethod(): List<Int> {
+        aSecondMethod()
+        val list = mutableListOf<Int>()
+        if (yesNo() == "yes") {
+            list.add(1)
+        } else {
+            list.add(2)
+        }
+        return list
+    }
+
 }

@@ -1,0 +1,11 @@
+codecov: 
+  token: asdasdasd
+  bot: "codecov-io"
+
+coverage:
+  round: up
+  status:
+    project:
+      default:
+        target: 10
+        threshold: 2%

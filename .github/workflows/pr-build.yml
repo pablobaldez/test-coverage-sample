@@ -1,5 +1,10 @@
 name: Build
+
 on: push
+
+env:
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 jobs:
   build:
     name: Build
@@ -38,6 +43,12 @@ jobs:
           default_author: github_actions
           message: commit coverage badge ${{ github.run_attempt }}
           add: '*.svg'
+
+      - name: Upload codecov coverage
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -t ${CODECOV_TOKEN}
 
       - name: Test Coverage Report Upload
         uses: actions/upload-artifact@v3
